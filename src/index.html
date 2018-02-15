@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BG-REPEAT</title>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.14/angular.js'></script>
+    
+    <script src="directives.js"></script>
+    <script src="bg-repeat.js"></script>
+    <script src="app.js"></script>
+</head>
+<style>
+    .item-label {
+        padding: 5px;
+        min-height: 50px;
+        background-color: lightblue;
+        border: 1px solid blue;
+        color: blue;
+    }
+    .isEven{
+        background-color: lightgray;
+    }
+    .container {
+        width: 500px;
+        height: 300px;
+        overflow: scroll;
+    }
+</style>
+
+<body>
+
+    <body ng-app="myApp"
+          ng-cloak
+          ng-controller="MyController as vm">
+        <div ng-if="vm.items.length > 0">Edit first item:
+            <input ng-model="vm.items[0].text">
+            <button ng-click="vm.hideFirstItem = !vm.hideFirstItem">
+                Hide First item by $index (if inside template)
+            </button>
+            <button ng-click="item = vm.items.shift(); vm.items.splice(1, 0, item);">
+                Swap first with second element
+             </button>
+            <button ng-click="vm.items.shift()">
+                Remove first element from items
+            </button>
+            <button ng-click="vm.showEven = !vm.showEven ; vm.filter = {isEven: vm.showEven}">
+                Filter Even or Odd
+            </button>
+        </div>
+        <hi-world1></hi-world1>
+        <div hi-world2="test">Directive 2</div>
+        <hr>
+
+        <div class="container">
+            <!-- bg-repeat -->
+            <div bg-repeat="item in vm.items | filter:vm.filter track by item.id"
+                 ng-if="!(vm.hideFirstItem === true && $index === 0) ">
+                <div class="item-label" ng-class="{ 'isEven': item.isEven }">
+                    <div>
+                        <div>{{item.text }}</div>
+                        <input ng-model="item.text">
+                    </div>
+                </div>
+            </div>
+           <!-- bg-repeat -->
+        </div>
+    </body>
+</body>
+
+</html>
